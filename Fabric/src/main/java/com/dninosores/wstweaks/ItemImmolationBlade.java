@@ -1,6 +1,8 @@
 package com.dninosores.wstweaks;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
@@ -12,11 +14,33 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterials;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemImmolationBlade extends SwordItem {
     public ItemImmolationBlade() {
         super(ToolMaterials.DIAMOND, 12, -2f,
                 new FabricItemSettings().group(ItemGroup.COMBAT));
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (Screen.hasShiftDown()) {
+            tooltip.add(new TranslatableText("tooltip.wstweaks.immolationblade-shift1"));
+            tooltip.add(new TranslatableText("tooltip.wstweaks.immolationblade-shift2"));
+            tooltip.add(new TranslatableText("tooltip.wstweaks.immolationblade-shift3"));
+        } else {
+            tooltip.add(new TranslatableText("tooltip.wstweaks.immolationblade1"));
+            tooltip.add(new TranslatableText("tooltip.wstweaks.immolationblade2"));
+        }
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
