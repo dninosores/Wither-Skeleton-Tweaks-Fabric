@@ -28,6 +28,7 @@ import net.minecraft.predicate.entity.EntityEquipmentPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.lwjgl.system.CallbackI;
@@ -50,6 +51,8 @@ public class WitherSkeletonTweaks implements ModInitializer {
     public static final Item FRAGMENT = new Item(new FabricItemSettings().group(ItemGroup.MISC));
     public static final Item LAVA_BLADE = new ItemImmolationBlade();
     public static final Item BLAZE_BLADE = new ItemImmolationBlade();
+
+    public static final String IMMOLATION_KEY = "immolation";
     public static final Identifier WITHER_SKELETON_TABLE =
             new Identifier("minecraft", "entities/wither_skeleton");
     public static final Identifier SKELETON_TABLE =
@@ -72,8 +75,8 @@ public class WitherSkeletonTweaks implements ModInitializer {
         LootTableEvents.MODIFY.register((ResourceManager resourceManager, LootManager lootManager, Identifier id, LootTable.Builder tableBuilder, LootTableSource source) -> {
             LootPool.Builder skullDrop = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(new MatchToolLootCondition(ItemPredicate.Builder
-                            .create().items(LAVA_BLADE, BLAZE_BLADE).build()));
+                    .conditionally(DamageSourcePropertiesLootCondition.builder(new DamageSourceNamePredicate.NameBuilder().setName(IMMOLATION_KEY)).build());
+
             if (WITHER_SKELETON_TABLE.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))

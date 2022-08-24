@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.item.ItemGroup;
@@ -24,7 +25,7 @@ public class ItemImmolationBlade extends SwordItem {
         super.postHit(stack, target, attacker);
         if (target instanceof AbstractSkeletonEntity) {
             target.setHealth(1);
-            target.damage(DamageSource.LIGHTNING_BOLT, 150);
+            target.damage(new EntityDamageSource(WitherSkeletonTweaks.IMMOLATION_KEY, attacker), 150);
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, target.getWorld());
             lightning.setPosition(target.getPos());
             lightning.setCosmetic(true);
