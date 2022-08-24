@@ -27,6 +27,7 @@ public class ItemImmolationBlade extends SwordItem {
             target.damage(DamageSource.LIGHTNING_BOLT, 150);
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, target.getWorld());
             lightning.setPosition(target.getPos());
+            lightning.setCosmetic(true);
             target.getWorld().spawnEntity(lightning);
             double i = target.getWorld().random.nextDouble() * 4.0D;
             double d = target.getWorld().random.nextDouble() * 4.0D;
