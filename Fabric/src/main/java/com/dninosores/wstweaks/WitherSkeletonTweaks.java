@@ -32,6 +32,8 @@ public class WitherSkeletonTweaks implements ModInitializer {
     public static final String BLAZE_BLADE_ID = "blaze_blade";
     public static final String LAVA_BLADE_ID = "lava_blade";
 
+
+
     public static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
     public static final Item FRAGMENT = new Item(new FabricItemSettings().group(ItemGroup.MISC));
 
@@ -47,6 +49,8 @@ public class WitherSkeletonTweaks implements ModInitializer {
         LOGGER.info("Initializing Wither Skeleton Tweaks (Fabric)");
 
         Registry.register(Registry.ITEM, new Identifier(NAMESPACE, FRAGMENT_ID), FRAGMENT);
+        Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "lava_blade"), new ItemImmolationBlade());
+        Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "blaze_blade"), new ItemImmolationBlade());
 
         LootTableEvents.MODIFY.register((ResourceManager resourceManager, LootManager lootManager, Identifier id, LootTable.Builder tableBuilder, LootTableSource source) -> {
             if (WITHER_SKELETON_TABLE.equals(id)) {
