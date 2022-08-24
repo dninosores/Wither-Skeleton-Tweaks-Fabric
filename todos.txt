@@ -1,7 +1,0 @@
-- add wither skull fragments
-- craft wither skull fragments into wither skulls
-- wither skeletons drop wither skull fragments when they don't drop skulls
-- port the immolation blade because that's sick as fuck and also hilarious
-
-- don't port the skeleton conversion i don't like that
-- don't port the drop cleanup i don't like that
