@@ -44,7 +44,7 @@ public class ItemImmolationBlade extends SwordItem {
         super.postHit(stack, target, attacker);
         if (target instanceof AbstractSkeletonEntity) {
             target.setHealth(1);
-            target.damage(DamageSource.GENERIC, 150);
+            target.damage(DamageSource.mob(attacker), 150);
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, target.getWorld());
             lightning.setPosition(target.getPos());
             lightning.setCosmetic(true);
