@@ -7,21 +7,16 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterials;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ItemImmolationBlade extends SwordItem {
@@ -49,7 +44,7 @@ public class ItemImmolationBlade extends SwordItem {
         super.postHit(stack, target, attacker);
         if (target instanceof AbstractSkeletonEntity) {
             target.setHealth(1);
-            target.damage(new EntityDamageSource(WitherSkeletonTweaks.IMMOLATION_KEY, attacker), 150);
+            target.damage(DamageSource.GENERIC, 150);
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, target.getWorld());
             lightning.setPosition(target.getPos());
             lightning.setCosmetic(true);

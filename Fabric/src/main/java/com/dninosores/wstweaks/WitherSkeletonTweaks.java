@@ -2,39 +2,27 @@ package com.dninosores.wstweaks;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
-import net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableSource;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.SkullBlock;
-import net.minecraft.block.WitherSkullBlock;
-import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
-import net.minecraft.item.SkullItem;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.*;
+import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.loot.provider.number.LootNumberProvider;
-import net.minecraft.predicate.PlayerPredicate;
 import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.predicate.entity.EntityEquipmentPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.lwjgl.system.CallbackI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spongepowered.asm.util.Locals;
 
 public class WitherSkeletonTweaks implements ModInitializer {
     // This logger is used to write text to the console and the log file.
@@ -42,9 +30,6 @@ public class WitherSkeletonTweaks implements ModInitializer {
     // That way, it's clear which mod wrote info, warnings, and errors.
     public static final String NAMESPACE = "wstweaks";
     public static final String FRAGMENT_ID = "fragment";
-    public static final String BLAZE_BLADE_ID = "blaze_blade";
-    public static final String LAVA_BLADE_ID = "lava_blade";
-
 
 
     public static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
@@ -52,7 +37,6 @@ public class WitherSkeletonTweaks implements ModInitializer {
     public static final Item LAVA_BLADE = new ItemImmolationBlade();
     public static final Item BLAZE_BLADE = new ItemImmolationBlade();
 
-    public static final String IMMOLATION_KEY = "immolation";
     public static final Identifier WITHER_SKELETON_TABLE =
             new Identifier("minecraft", "entities/wither_skeleton");
     public static final Identifier SKELETON_TABLE =
@@ -75,7 +59,14 @@ public class WitherSkeletonTweaks implements ModInitializer {
         LootTableEvents.MODIFY.register((ResourceManager resourceManager, LootManager lootManager, Identifier id, LootTable.Builder tableBuilder, LootTableSource source) -> {
             LootPool.Builder skullDrop = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(DamageSourcePropertiesLootCondition.builder(new DamageSourceNamePredicate.NameBuilder().setName(IMMOLATION_KEY)).build());
+                    .conditionally(DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().sourceEntity(
+                            EntityPredicate.Builder.create().equipment(
+                                            EntityEquipmentPredicate.Builder.create().mainhand(
+                                                            ItemPredicate.Builder.create().items(LAVA_BLADE, BLAZE_BLADE)
+                                                                    .build())
+                                                    .build())
+                                    .build())
+                    ));
 
             if (WITHER_SKELETON_TABLE.equals(id)) {
                 LootPool.Builder poolBuilder = LootPool.builder()
