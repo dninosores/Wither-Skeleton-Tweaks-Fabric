@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ItemImmolationBlade extends SwordItem {
     public ItemImmolationBlade() {
-        super(ToolMaterials.DIAMOND, 12, -2f,
+        super(ToolMaterials.DIAMOND, 0, -2f,
                 new FabricItemSettings().group(ItemGroup.COMBAT));
     }
 
@@ -41,6 +41,7 @@ public class ItemImmolationBlade extends SwordItem {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         target.setOnFireFor(150);
+        target.damage(DamageSource.mob(attacker), 12);
         super.postHit(stack, target, attacker);
         if (target instanceof AbstractSkeletonEntity) {
             target.setHealth(1);
