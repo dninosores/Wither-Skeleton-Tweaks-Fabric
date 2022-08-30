@@ -19,6 +19,7 @@
     ]
   },
   "mixins": [
+    "wstweaks.mixins.json"
   ],
 
   "depends": {

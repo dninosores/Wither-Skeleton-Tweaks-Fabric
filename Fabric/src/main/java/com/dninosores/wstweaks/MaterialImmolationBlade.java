@@ -18,7 +18,7 @@ public class MaterialImmolationBlade implements ToolMaterial {
 
     @Override
     public float getAttackDamage() {
-        return 0;
+        return 4;
     }
 
     @Override

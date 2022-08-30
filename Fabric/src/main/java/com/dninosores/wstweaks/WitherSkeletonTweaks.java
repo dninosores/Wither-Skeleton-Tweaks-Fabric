@@ -57,35 +57,5 @@ public class WitherSkeletonTweaks implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "blaze_blade"), BLAZE_BLADE);
 
         ItemImmolationBlade.RegisterEvents();
-
-        LootTableEvents.MODIFY.register((ResourceManager resourceManager, LootManager lootManager, Identifier id, LootTable.Builder tableBuilder, LootTableSource source) -> {
-            LootPool.Builder skullDrop = LootPool.builder()
-                    .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create().sourceEntity(
-                            EntityPredicate.Builder.create().equipment(
-                                            EntityEquipmentPredicate.Builder.create().mainhand(
-                                                            ItemPredicate.Builder.create().items(LAVA_BLADE, BLAZE_BLADE)
-                                                                    .build())
-                                                    .build())
-                                    .build())
-                    ));
-
-            if (WITHER_SKELETON_TABLE.equals(id)) {
-                LootPool.Builder poolBuilder = LootPool.builder()
-                        .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(0.9f).build())
-                        .with(ItemEntry.builder(FRAGMENT));
-                tableBuilder.pool(poolBuilder);
-
-                LootPool.Builder poolBuilder2 =
-                        skullDrop.with(ItemEntry.builder(Items.WITHER_SKELETON_SKULL));
-                tableBuilder.pool(poolBuilder2);
-            }
-            if (SKELETON_TABLE.equals(id) || STRAY_TABLE.equals(id)) {
-                LootPool.Builder poolBuilder2 =
-                        skullDrop.with(ItemEntry.builder(Items.SKELETON_SKULL));
-                tableBuilder.pool(poolBuilder2);
-            }
-        });
     }
 }
