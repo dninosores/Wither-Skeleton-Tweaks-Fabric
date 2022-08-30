@@ -1,27 +1,42 @@
 package com.dninosores.wstweaks;
 
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterials;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemImmolationBlade extends SwordItem {
+
+    public static int FIRE_TIME = 5;
+    public static void RegisterEvents() {
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (player.isSpectator()) {
+                return ActionResult.PASS;
+            }
+            if (player.getEquippedStack(EquipmentSlot.MAINHAND).isOf(WitherSkeletonTweaks.BLAZE_BLADE) ||
+                    player.getEquippedStack(EquipmentSlot.MAINHAND).isOf(WitherSkeletonTweaks.LAVA_BLADE)) {
+                entity.setOnFireFor(FIRE_TIME);
+            }
+            return ActionResult.PASS;
+        });
+    }
+
     public ItemImmolationBlade() {
-        super(ToolMaterials.DIAMOND, 0, -2f,
+        super(new MaterialImmolationBlade(), 12, -4f,
                 new FabricItemSettings().group(ItemGroup.COMBAT));
     }
 
@@ -40,8 +55,8 @@ public class ItemImmolationBlade extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        target.setOnFireFor(150);
-        target.damage(DamageSource.mob(attacker), 12);
+        // target.setOnFireFor(150);
+       // target.damage(DamageSource.mob(attacker), 12);
         super.postHit(stack, target, attacker);
         if (target instanceof AbstractSkeletonEntity) {
             target.setHealth(1);

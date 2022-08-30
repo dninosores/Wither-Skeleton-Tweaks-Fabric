@@ -56,6 +56,8 @@ public class WitherSkeletonTweaks implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "lava_blade"), LAVA_BLADE);
         Registry.register(Registry.ITEM, new Identifier(NAMESPACE, "blaze_blade"), BLAZE_BLADE);
 
+        ItemImmolationBlade.RegisterEvents();
+
         LootTableEvents.MODIFY.register((ResourceManager resourceManager, LootManager lootManager, Identifier id, LootTable.Builder tableBuilder, LootTableSource source) -> {
             LootPool.Builder skullDrop = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
